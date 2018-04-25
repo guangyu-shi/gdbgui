@@ -7,6 +7,7 @@ https://github.com/cs01/gdbgui
 
 import argparse
 import binascii
+from contextlib import closing
 from distutils.spawn import find_executable
 from flask import (
     Flask,
@@ -230,6 +231,16 @@ def setup_backend(
                 url = (socket.gethostbyname(socket.gethostname()), port)
             except Exception:
                 url = (host, port)
+
+        with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+            try:
+                sock.bind((host, port))
+            except socket.error as e:
+                print(
+                    'gdbgui cannot bind to %s:%d at this time. %s' %
+                    (host, port, e)
+                )
+                exit(1)
 
         if open_browser is True and debug is False:
             text = ("Opening gdbgui in browser at " + protocol + "%s:%d") % url
