@@ -113,3 +113,9 @@ pip install pip --upgrade  # make sure pip is at the latest version
 Then run
 
     pip install -r requirements.txt
+    
+    or if the above line fails due to using http instead of https://pypi.python.org/simple
+     
+    pip install -r requirements.txt -i https://pypi.python.org/simple
+ 
+    
